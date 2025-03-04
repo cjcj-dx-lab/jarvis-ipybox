@@ -1,4 +1,4 @@
-name: ipybox
+name: jarvis-ipybox
 channels:
   - defaults
 dependencies:
