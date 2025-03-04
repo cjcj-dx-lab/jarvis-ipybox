@@ -173,9 +173,10 @@ class ExecutionClient:
         > Hello, world!
     """
 
-    def __init__(self, port: int, host: str = "localhost", heartbeat_interval: float = 10):
+    def __init__(self, port: int, host: str = "localhost", heartbeat_interval: float = 10, https: bool = False):
         self.port = port
         self.host = host
+        self.https = https
 
         self._heartbeat_interval = heartbeat_interval
         self._heartbeat_callback = None
@@ -203,7 +204,10 @@ class ExecutionClient:
 
     @property
     def base_http_url(self):
-        return f"http://{self.host}:{self.port}/api/kernels"
+        if self.https:
+            return f"https://{self.host}:{self.port}/api/kernels"
+        else:
+            return f"http://{self.host}:{self.port}/api/kernels"
 
     @property
     def kernel_http_url(self):
@@ -211,7 +215,10 @@ class ExecutionClient:
 
     @property
     def kernel_ws_url(self):
-        return f"ws://{self.host}:{self.port}/api/kernels/{self.kernel_id}/channels"
+        if self.https:
+            return f"wss://{self.host}:{self.port}/api/kernels/{self.kernel_id}/channels"
+        else:
+            return f"ws://{self.host}:{self.port}/api/kernels/{self.kernel_id}/channels"
 
     async def connect(self, retries: int = 10, retry_interval: float = 1.0):
         """Creates and connects to an IPython kernel.
