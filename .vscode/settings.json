@@ -1,0 +1,26 @@
+{
+    // Python 포매팅 설정
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    // Black 포매터 설정
+    "black-formatter.args": [
+        "--line-length",
+        "100"
+    ],
+    // Flake8 설정
+    "flake8.enabled": true,
+    "flake8.args": [
+        "--max-line-length=100",
+        "--extend-ignore=E203,F401"
+    ],
+    // isort 설정
+    "isort.args": [
+        "--profile",
+        "black"
+    ]
+}
