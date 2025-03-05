@@ -14,7 +14,7 @@ authors = [
     "Woojin Cho <woojin.cho@gmail.com>",
 ]
 packages = [
-    { include = "jarvis-ipybox" },
+    { include = "jarvis_ipybox" },
 ]
 
 [tool.poetry.dependencies]

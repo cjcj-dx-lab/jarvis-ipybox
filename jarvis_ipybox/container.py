@@ -5,7 +5,7 @@ from pathlib import Path
 from aiodocker import Docker
 from aiodocker.containers import DockerContainer
 
-from ipybox.utils import arun
+from jarvis_ipybox.utils import arun
 
 DEFAULT_TAG = "gradion-ai/ipybox"
 
