@@ -7,7 +7,7 @@ from aiodocker.containers import DockerContainer
 
 from jarvis_ipybox.utils import arun
 
-DEFAULT_TAG = "gradion-ai/ipybox"
+DEFAULT_TAG = "jarvis-ipybox"
 
 
 class ExecutionContainer:
@@ -17,7 +17,7 @@ class ExecutionContainer:
     It handles the creation, port mapping, volume binding, and cleanup of the container.
 
     Args:
-        tag: Tag of the Docker image to use (defaults to gradion-ai/ipybox)
+        tag: Tag of the Docker image to use (defaults to jarvis-ipybox)
         binds: Mapping of host paths to container paths for volume mounting.
             Host paths may be relative or absolute. Container paths must be relative
             and are created as subdirectories of `/app` in the container.
@@ -34,7 +34,7 @@ class ExecutionContainer:
 
     Example:
         ```python
-        from ipybox import ExecutionClient, ExecutionContainer
+        from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
         binds = {"/host/path": "example/path"}
         env = {"API_KEY": "secret"}

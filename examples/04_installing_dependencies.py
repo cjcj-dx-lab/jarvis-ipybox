@@ -4,7 +4,7 @@ Example demonstrating how to install dependencies at runtime.
 
 import asyncio
 
-from ipybox import ExecutionClient, ExecutionContainer
+from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
 
 async def main():

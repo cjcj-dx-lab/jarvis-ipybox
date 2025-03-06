@@ -8,7 +8,7 @@ import aiofiles
 import pytest
 from PIL import Image
 
-from ipybox import DEFAULT_TAG, ExecutionClient, ExecutionContainer, ExecutionError
+from jarvis_ipybox import DEFAULT_TAG, ExecutionClient, ExecutionContainer, ExecutionError
 
 
 @pytest.fixture(
@@ -20,7 +20,7 @@ def executor_image(request) -> Generator[str, None, None]:
     tag = f"{DEFAULT_TAG}-{tag_suffix}"
     deps_path = Path(__file__).parent / "dependencies.txt"
 
-    cmd = ["python", "-m", "ipybox", "build", "-t", tag, "-d", str(deps_path)]
+    cmd = ["python", "-m", "jarvis_ipybox", "build", "-t", tag, "-d", str(deps_path)]
 
     if tag_suffix == "test-root":
         cmd.append("-r")
@@ -183,16 +183,16 @@ async def test_binds(executor: ExecutionClient, workspace: str):
 @pytest.mark.asyncio(loop_scope="module")
 async def test_get_module_source(executor: ExecutionClient):
     # Get the source through the executor
-    result = await executor.get_module_sources(["ipybox.modinfo"])
+    result = await executor.get_module_sources(["jarvis_ipybox.modinfo"])
     assert result is not None
 
     # Load the actual source file
-    modinfo_path = Path("ipybox", "modinfo.py")
+    modinfo_path = Path("jarvis_ipybox", "modinfo.py")
     with open(modinfo_path) as f:
         actual_source = f.read()
 
     # Extract the source code from the markdown code block
-    source_match = re.search(r"```python\n# Module: ipybox\.modinfo\n\n(.*?)\n```", result, re.DOTALL)
+    source_match = re.search(r"```python\n# Module: jarvis_ipybox\.modinfo\n\n(.*?)\n```", result, re.DOTALL)
     assert source_match is not None
     extracted_source = source_match.group(1)
 

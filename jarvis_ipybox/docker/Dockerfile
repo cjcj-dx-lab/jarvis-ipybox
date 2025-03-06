@@ -36,11 +36,11 @@ ENV PATH="${HOME}/poetry/bin:${PATH}"
 ENV PATH="${HOME}/.local/bin:${PATH}"
 
 COPY --chown=appuser:appuser environment.yml ${HOME}/
-RUN conda env create -f ${HOME}/environment.yml -n ipybox && conda init bash
+RUN conda env create -f ${HOME}/environment.yml -n jarvis-ipybox && conda init bash
 
 COPY --chown=appuser:appuser pyproject.toml ${HOME}/
 RUN poetry config virtualenvs.create false
-RUN conda run -n ipybox poetry install --only main
+RUN conda run -n jarvis-ipybox poetry install --only main
 
 # 커널 관리 스크립트 추가
 COPY --chown=appuser:appuser custom_kernel_manager.py ${HOME}/
@@ -49,8 +49,8 @@ COPY --chown=appuser:appuser custom_kernel_manager.py ${HOME}/
 COPY --chown=appuser:appuser server.sh ${HOME}/
 RUN chmod +x ${HOME}/server.sh
 
-COPY --chown=appuser:appuser ipybox/modinfo.py /app/ipybox/
+COPY --chown=appuser:appuser jarvis_ipybox/modinfo.py /app/jarvis_ipybox/
 
 WORKDIR /app
 
-CMD ["/bin/bash", "-c", "source ${HOME}/conda/etc/profile.d/conda.sh && conda activate ipybox && ${HOME}/server.sh"]
+CMD ["/bin/bash", "-c", "source ${HOME}/conda/etc/profile.d/conda.sh && conda activate jarvis-ipybox && ${HOME}/server.sh"]

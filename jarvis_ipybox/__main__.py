@@ -7,7 +7,7 @@ from typing import Annotated
 
 import typer
 
-from ipybox.container import DEFAULT_TAG
+from jarvis_ipybox.container import DEFAULT_TAG
 
 pkg_path = Path(__file__).parent
 app = typer.Typer()
@@ -55,8 +55,8 @@ def build(
         with open(tmp_path / "pyproject.toml", "w") as f:
             f.write(project_spec.format(dependencies=dependencies_spec))
 
-        ipybox_path = tmp_path / "ipybox"
-        ipybox_path.mkdir()
+        jarvis_ipybox_path = tmp_path / "jarvis_ipybox"
+        jarvis_ipybox_path.mkdir()
 
         if root:
             dockerfile = "Dockerfile.root"
@@ -70,7 +70,7 @@ def build(
                 f"GID={os.getgid()}",
             ]
 
-        shutil.copy(pkg_path / "modinfo.py", tmp_path / "ipybox")
+        shutil.copy(pkg_path / "modinfo.py", tmp_path / "jarvis_ipybox")
         shutil.copy(pkg_path / "config" / "default" / "environment.yml", tmp_path)
         shutil.copy(pkg_path / "config" / "default" / "custom_kernel_manager.py", tmp_path)
         shutil.copy(pkg_path / "docker" / dockerfile, tmp_path)

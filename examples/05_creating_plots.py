@@ -4,7 +4,7 @@ Example demonstrating how to create and save matplotlib plots.
 
 import asyncio
 
-from ipybox import ExecutionClient, ExecutionContainer
+from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
 
 async def main():

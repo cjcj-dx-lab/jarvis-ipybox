@@ -4,7 +4,7 @@ Example demonstrating how to use environment variables in the execution containe
 
 import asyncio
 
-from ipybox import ExecutionClient, ExecutionContainer
+from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
 
 async def main():

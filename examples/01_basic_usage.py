@@ -5,14 +5,14 @@ Basic usage example demonstrating how to execute Python code in an execution con
 import asyncio
 
 # --8<-- [start:import]
-from ipybox import ExecutionClient, ExecutionContainer
+from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
 # --8<-- [end:import]
 
 
 async def main():
     # --8<-- [start:usage]
-    async with ExecutionContainer(tag="gradion-ai/ipybox") as container:  # (1)!
+    async with ExecutionContainer(tag="jarvis-ipybox") as container:  # (1)!
         async with ExecutionClient(port=container.port) as client:  # (2)!
             result = await client.execute("print('Hello, world!')")  # (3)!
             print(f"Output: {result.text}")  # (4)!

@@ -4,7 +4,7 @@ Example demonstrating state management between different client contexts.
 
 import asyncio
 
-from ipybox import ExecutionClient, ExecutionContainer, ExecutionError
+from jarvis_ipybox import ExecutionClient, ExecutionContainer, ExecutionError
 
 
 async def main():

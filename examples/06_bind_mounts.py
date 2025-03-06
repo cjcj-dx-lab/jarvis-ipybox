@@ -7,7 +7,7 @@ import asyncio
 import aiofiles
 import aiofiles.os
 
-from ipybox import ExecutionClient, ExecutionContainer
+from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
 
 async def main():

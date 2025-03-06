@@ -72,16 +72,16 @@ jobs:
       run: |
         $wheel = Get-ChildItem dist/*.whl | Select-Object -First 1
         pip install $wheel
-        python -c "import ipybox"
+        python -c "import jarvis_ipybox"
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        pip uninstall -y ipybox
+        pip uninstall -y jarvis_ipybox
 
     - name: Test wheel installation (Unix)
       if: runner.os != 'Windows'
       run: |
         pip install dist/*.whl
-        python -c "import ipybox"
-        pip uninstall -y ipybox
+        python -c "import jarvis_ipybox"
+        pip uninstall -y jarvis_ipybox
 
     - name: Test tarball installation (Windows)
       if: runner.os == 'Windows'
@@ -89,16 +89,16 @@ jobs:
       run: |
         $tarball = Get-ChildItem dist/*.tar.gz | Select-Object -First 1
         pip install $tarball
-        python -c "import ipybox"
+        python -c "import jarvis_ipybox"
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        pip uninstall -y ipybox
+        pip uninstall -y jarvis_ipybox
 
     - name: Test tarball installation (Unix)
       if: runner.os != 'Windows'
       run: |
         pip install dist/*.tar.gz
-        python -c "import ipybox"
-        pip uninstall -y ipybox
+        python -c "import jarvis_ipybox"
+        pip uninstall -y jarvis_ipybox
 
     - name: Run smoke test (Linux)
       if: runner.os == 'Linux'
@@ -106,4 +106,4 @@ jobs:
         pip install dist/*.whl
         pip install pytest pytest-asyncio
         pytest tests/test_basic.py
-        pip uninstall -y ipybox
+        pip uninstall -y jarvis_ipybox

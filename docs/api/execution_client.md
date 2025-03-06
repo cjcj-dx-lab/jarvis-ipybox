@@ -1,5 +1,5 @@
 
-::: ipybox.executor
+::: jarvis_ipybox.executor
     options:
         show_root_heading: false
         members:

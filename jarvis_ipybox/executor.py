@@ -160,7 +160,7 @@ class ExecutionClient:
 
     Example:
         ```python
-        from ipybox import ExecutionClient, ExecutionContainer
+        from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
         binds = {"/host/path": "example/path"}
         env = {"API_KEY": "secret"}
@@ -337,4 +337,4 @@ class ExecutionClient:
             logger.error("Kernel disconnected", e)
 
     async def _init_kernel(self):
-        await self.execute(r"%colors nocolor" + "\nfrom ipybox.modinfo import print_module_sources, get_module_info")
+        await self.execute(r"%colors nocolor" + "\nfrom jarvis_ipybox.modinfo import print_module_sources, get_module_info")

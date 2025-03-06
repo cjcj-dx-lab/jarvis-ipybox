@@ -54,7 +54,7 @@ plugins:
       default_handler: python
       handlers:
         python:
-          paths: [ipybox]
+          paths: [jarvis_ipybox]
           options:
             show_signature_annotations: true
             signature_crossrefs: true

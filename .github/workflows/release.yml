@@ -57,7 +57,7 @@ jobs:
 
     environment:
       name: pypi
-      url: https://pypi.org/project/ipybox
+      url: https://pypi.org/project/jarvis-ipybox
 
     steps:
       - name: Retrieve release distributions

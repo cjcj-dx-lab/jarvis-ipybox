@@ -1,12 +1,13 @@
 import pytest
 
-from ipybox import ExecutionClient, ExecutionContainer
+from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
+TEST_IMAGE_TAG = "ghcr.io/gradion-ai/jarvis_ipybox:minimal"
 
 @pytest.fixture(scope="module")
 async def executor(workspace: str):
     async with ExecutionContainer(
-        tag="ghcr.io/gradion-ai/ipybox:minimal",
+        tag=TEST_IMAGE_TAG,
         binds={workspace: "workspace"},
     ) as container:
         async with ExecutionClient(host="localhost", port=container.port) as client:

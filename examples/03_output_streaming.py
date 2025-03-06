@@ -4,7 +4,7 @@ Example demonstrating output streaming during code execution.
 
 import asyncio
 
-from ipybox import ExecutionClient, ExecutionContainer
+from jarvis_ipybox import ExecutionClient, ExecutionContainer
 
 
 async def main():
