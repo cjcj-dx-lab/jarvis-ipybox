@@ -72,6 +72,7 @@ def build(
 
         shutil.copy(pkg_path / "modinfo.py", tmp_path / "ipybox")
         shutil.copy(pkg_path / "config" / "default" / "environment.yml", tmp_path)
+        shutil.copy(pkg_path / "config" / "default" / "custom_kernel_manager.py", tmp_path)
         shutil.copy(pkg_path / "docker" / dockerfile, tmp_path)
         shutil.copy(pkg_path / "scripts" / "server.sh", tmp_path)
 

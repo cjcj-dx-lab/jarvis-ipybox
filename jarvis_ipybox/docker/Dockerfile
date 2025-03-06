@@ -16,6 +16,11 @@ RUN apt-get update && apt-get install -y \
 RUN groupadd -g ${GID} appuser && \
     useradd -u ${UID} -g appuser -m -s /bin/bash appuser
 
+# 커널 디렉토리 환경 변수 설정 및 커널 디렉토리 생성
+ENV KERNEL_ROOT_DIR=${HOME}/data
+
+RUN mkdir -p ${KERNEL_ROOT_DIR} && chown -R appuser:appuser ${KERNEL_ROOT_DIR}
+
 WORKDIR ${HOME}
 
 USER appuser
@@ -37,6 +42,10 @@ COPY --chown=appuser:appuser pyproject.toml ${HOME}/
 RUN poetry config virtualenvs.create false
 RUN conda run -n ipybox poetry install --only main
 
+# 커널 관리 스크립트 추가
+COPY --chown=appuser:appuser custom_kernel_manager.py ${HOME}/
+
+# 서버 실행 스크립트 추가
 COPY --chown=appuser:appuser server.sh ${HOME}/
 RUN chmod +x ${HOME}/server.sh
 
