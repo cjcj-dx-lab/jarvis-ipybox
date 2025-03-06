@@ -75,6 +75,7 @@ def build(
         shutil.copy(pkg_path / "config" / "default" / "custom_kernel_manager.py", tmp_path)
         shutil.copy(pkg_path / "docker" / dockerfile, tmp_path)
         shutil.copy(pkg_path / "scripts" / "server.sh", tmp_path)
+        shutil.copy(pkg_path / "scripts" / "test.txt", tmp_path)
 
         build_cmd = [
             "docker",
