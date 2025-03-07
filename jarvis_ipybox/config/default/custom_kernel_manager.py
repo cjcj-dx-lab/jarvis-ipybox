@@ -9,6 +9,11 @@ class CustomMappingKernelManager(MappingKernelManager):
     각 커널이 독립된 디렉토리를 사용하도록 설정하는 커스텀 커널 매니저
     """
     
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # root_dir 속성 직접 설정
+        self.root_dir = os.environ.get('HOME', '/home/appuser')
+    
     def _kernel_spec_manager_default(self):
         return KernelSpecManager()
     
@@ -26,9 +31,33 @@ class CustomMappingKernelManager(MappingKernelManager):
         env = kwargs.pop('env', {})
         env['KERNEL_ID'] = kernel_id
         env['KERNEL_DIR'] = kernel_dir
+        
+        # PYTHONPATH에 /app 디렉토리 추가
+        python_path = env.get('PYTHONPATH', '')
+        if python_path:
+            env['PYTHONPATH'] = f"/app:{python_path}"
+        else:
+            env['PYTHONPATH'] = "/app"
+        
         kwargs['env'] = env
         
+        # 작업 디렉토리를 커널 디렉토리로 설정
+        if path is None:
+            path = kernel_dir
+            
+        # cwd 직접 설정하여 cwd_for_path 호출 방지
+        kwargs['cwd'] = kernel_dir
+        
         return super().start_kernel(kernel_id=kernel_id, path=path, **kwargs)
+    
+    def cwd_for_path(self, path, env=None):
+        """
+        cwd_for_path 메서드 오버라이드하여 root_dir 참조 오류 방지
+        """
+        if path is None:
+            return self._get_kernel_dir(env.get('KERNEL_ID', '')) if env else os.getcwd()
+        
+        return os.path.abspath(path)
     
     def _get_kernel_dir(self, kernel_id):
         """
