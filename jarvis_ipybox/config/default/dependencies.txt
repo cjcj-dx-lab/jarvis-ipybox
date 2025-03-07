@@ -1,0 +1,18 @@
+# sandbox-ipy-base
+# 통신
+aioboto3 = "^11.2"
+aiohttp = "^3.8"
+s3fs = "^2023.10"
+# 파일 처리/변환
+openpyxl = "^3.1"
+pyyaml = "^6.0"
+# 이미지 처리
+pillow = "^10.0"
+# 수학/과학
+scipy = "^1.11"
+# 데이터 분석 및 시각화 
+folium = "^0.14"
+matplotlib = "^3.8"
+pandas = "^2.1"
+plotly = "^5.17"
+scikit-learn = "^1.3"
