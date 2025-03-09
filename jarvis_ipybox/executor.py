@@ -173,7 +173,13 @@ class ExecutionClient:
         > Hello, world!
     """
 
-    def __init__(self, port: int, host: str = "localhost", heartbeat_interval: float = 10, https: bool = False):
+    def __init__(
+        self,
+        port: int,
+        host: str = "localhost",
+        heartbeat_interval: float = 10,
+        https: bool = False,
+    ):
         self.port = port
         self.host = host
         self.https = https
@@ -242,7 +248,9 @@ class ExecutionClient:
         self._ws = await websocket_connect(HTTPRequest(url=self.kernel_ws_url))
         logger.info("Connected to kernel")
 
-        self.heartbeat_callback = PeriodicCallback(self._ping_kernel, self._heartbeat_interval * 1000)
+        self.heartbeat_callback = PeriodicCallback(
+            self._ping_kernel, self._heartbeat_interval * 1000
+        )
         self.heartbeat_callback.start()
         logger.info(f"Started heartbeat (interval = {self._heartbeat_interval}s)")
 
@@ -337,4 +345,7 @@ class ExecutionClient:
             logger.error("Kernel disconnected", e)
 
     async def _init_kernel(self):
-        await self.execute(r"%colors nocolor" + "\nfrom jarvis_ipybox.modinfo import print_module_sources, get_module_info")
+        await self.execute(
+            r"%colors nocolor"
+            + "\nfrom jarvis_ipybox.modinfo import print_module_sources, get_module_info"
+        )

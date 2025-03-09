@@ -33,7 +33,10 @@ def build(
             file_okay=True,
             dir_okay=False,
         ),
-    ] = Path(__file__).parent / "config" / "default" / "dependencies.txt",
+    ] = Path(__file__).parent
+    / "config"
+    / "default"
+    / "dependencies.txt",
     root: Annotated[
         bool,
         typer.Option(
@@ -88,7 +91,12 @@ def build(
             *build_cmd_args,
         ]
 
-        process = subprocess.Popen(build_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)  # type: ignore
+        process = subprocess.Popen(
+            build_cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+        )  # type: ignore
 
         while True:
             output = process.stdout.readline()  # type: ignore

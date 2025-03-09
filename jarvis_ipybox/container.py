@@ -145,8 +145,9 @@ class ExecutionContainer:
                     await asyncio.sleep(0.1)
 
         except TimeoutError:
+            _timeout = self._port_allocation_timeout
             raise TimeoutError(
-                f"Timed out waiting for host port allocation after {self._port_allocation_timeout} seconds"
+                f"Timed out waiting for host port allocation after {_timeout} seconds"
             )
 
     async def _local_image(self) -> bool:
