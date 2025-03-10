@@ -74,6 +74,15 @@ class CustomMappingKernelManager(MappingKernelManager):
         kernel_dir = os.path.join(kernel_root, kernel_id)
         if not os.path.exists(kernel_dir):
             os.makedirs(kernel_dir, exist_ok=True)
+
+        # 커널 ID별 인풋, 아웃풋 디렉토리 생성
+        kernel_input_dir = os.path.join(kernel_root, kernel_id, "input")
+        if not os.path.exists(kernel_input_dir):
+            os.makedirs(kernel_input_dir, exist_ok=True)
+        
+        kernel_output_dir = os.path.join(kernel_root, kernel_id, "output")
+        if not os.path.exists(kernel_output_dir):
+            os.makedirs(kernel_output_dir, exist_ok=True)
             
         return kernel_dir
 
