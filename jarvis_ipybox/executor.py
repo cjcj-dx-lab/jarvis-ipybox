@@ -16,6 +16,22 @@ from tornado.websocket import WebSocketClientConnection, websocket_connect
 
 logger = logging.getLogger(__name__)
 
+# matplotlib 설정 상수
+# 그래프의 기본 크기 (가로, 세로) - 인치 단위
+# 10x6 인치는 웹 환경에서 보기 좋은 와이드스크린 비율입니다
+FIGURE_SIZE = (10, 6)
+
+# 그래프 저장 시 기본 파일 형식
+# 'svg': 벡터 그래픽 형식으로 확대해도 품질이 저하되지 않음
+# 다른 옵션: 'png', 'pdf', 'jpg' 등
+SAVEFIG_FORMAT = "svg"
+
+# IPython에서 표시할 그래프 형식 목록
+# 여러 형식을 지정하면 모두 생성되어 클라이언트에서 선택 가능
+# 'svg': 벡터 그래픽으로 확대/축소 및 동적 조작에 적합
+# 'png': 래스터 이미지로 모든 환경에서 일관된 표시 가능
+MATPLOTLIB_FORMATS = ["svg", "png"]
+
 
 class ConnectionError(Exception):
     """Exception raised when connection to an IPython kernel fails."""
@@ -43,10 +59,12 @@ class ExecutionResult:
     Args:
         text: Output text generated during execution
         images: List of images generated during execution
+        svg_images: List of SVG XML strings generated during execution
     """
 
     text: str | None
     images: list[Image.Image]
+    svg_images: list[str]
 
 
 class Execution:
@@ -63,6 +81,7 @@ class Execution:
 
         self._chunks: list[str] = []
         self._images: list[Image.Image] = []
+        self._svg_images: list[str] = []
 
         self._stream_consumed: bool = False
 
@@ -87,6 +106,7 @@ class Execution:
         return ExecutionResult(
             text="".join(self._chunks).strip() if self._chunks else None,
             images=self._images,
+            svg_images=self._svg_images,
         )
 
     async def stream(self, timeout: float = 120) -> AsyncIterator[str]:
@@ -137,6 +157,14 @@ class Execution:
             elif msg_type in ["execute_result", "display_data"]:
                 msg_data = msg_dict["content"]["data"]
                 yield msg_data["text/plain"]
+
+                # SVG 형식 처리
+                if "image/svg+xml" in msg_data:
+                    svg_data = msg_data["image/svg+xml"]
+                    self._svg_images.append(svg_data)
+                    yield svg_data
+
+                # PNG 형식 처리
                 if "image/png" in msg_data:
                     image_bytes_io = io.BytesIO(b64decode(msg_data["image/png"]))
                     image = Image.open(image_bytes_io)
@@ -347,5 +375,14 @@ class ExecutionClient:
     async def _init_kernel(self):
         await self.execute(
             r"%colors nocolor"
+            + "\n# 필요한 모듈 임포트"
             + "\nfrom jarvis_ipybox.modinfo import print_module_sources, get_module_info"
+            + "\nimport matplotlib"
+            + "\nimport matplotlib.pyplot as plt"
+            + "\nfrom IPython.display import set_matplotlib_formats"
+            + "\n# matplotlib 설정"
+            + "\nmatplotlib.use('Agg')"  # 백엔드 설정
+            + f"\nplt.rcParams['figure.figsize'] = {FIGURE_SIZE}"
+            + f"\nplt.rcParams['savefig.format'] = '{SAVEFIG_FORMAT}'"
+            + f"\nset_matplotlib_formats({', '.join(repr(fmt) for fmt in MATPLOTLIB_FORMATS)})"
         )

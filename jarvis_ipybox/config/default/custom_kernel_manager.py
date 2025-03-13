@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import os
-import json
+
 from jupyter_client.kernelspec import KernelSpecManager
 from jupyter_server.services.kernels.kernelmanager import MappingKernelManager
+
 
 class CustomMappingKernelManager(MappingKernelManager):
     """
@@ -86,7 +87,8 @@ class CustomMappingKernelManager(MappingKernelManager):
             
         return kernel_dir
 
+
 if __name__ == "__main__":
     # 테스트 코드 또는 필요한 초기화 코드
     manager = CustomMappingKernelManager()
-    print("커스텀 커널 매니저가 초기화되었습니다.") 
+    print("커스텀 커널 매니저가 초기화되었습니다.")
