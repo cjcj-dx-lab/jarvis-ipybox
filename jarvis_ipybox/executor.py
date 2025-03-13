@@ -379,7 +379,7 @@ class ExecutionClient:
             + "\nfrom jarvis_ipybox.modinfo import print_module_sources, get_module_info"
             + "\nimport matplotlib"
             + "\nimport matplotlib.pyplot as plt"
-            + "\nfrom IPython.display import set_matplotlib_formats"
+            + "\nfrom matplotlib_inline.backend_inline import set_matplotlib_formats"
             + "\n# matplotlib 설정"
             + "\nmatplotlib.use('Agg')"  # 백엔드 설정
             + f"\nplt.rcParams['figure.figsize'] = {FIGURE_SIZE}"
