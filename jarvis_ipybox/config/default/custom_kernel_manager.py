@@ -11,6 +11,12 @@ class CustomMappingKernelManager(MappingKernelManager):
     """
     
     def __init__(self, **kwargs):
+        
+        # 커널 유효 시간
+        kwargs['cull_idle_timeout'] = 3600  # 1시간
+        kwargs['cull_interval'] = 60        # 1분마다 검사
+        kwargs['cull_connected'] = False    # 연결된 커널도 종료
+
         super().__init__(**kwargs)
         # root_dir 속성 직접 설정
         self.root_dir = os.environ.get('HOME', '/home/appuser')

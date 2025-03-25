@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     python3.10-venv \
     curl \
     wget \
+    fonts-nanum \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g ${GID} appuser && \

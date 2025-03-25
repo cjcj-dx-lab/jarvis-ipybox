@@ -207,6 +207,7 @@ class ExecutionClient:
         host: str = "localhost",
         heartbeat_interval: float = 10,
         https: bool = False,
+        kernel_id: str = None
     ):
         self.port = port
         self.host = host
@@ -215,7 +216,7 @@ class ExecutionClient:
         self._heartbeat_interval = heartbeat_interval
         self._heartbeat_callback = None
 
-        self._kernel_id = None
+        self._kernel_id = kernel_id
         self._ws: WebSocketClientConnection
 
     async def __aenter__(self):
@@ -264,14 +265,15 @@ class ExecutionClient:
         Raises:
             ConnectionError: If connection cannot be established after all retries
         """
-        for _ in range(retries):
-            try:
-                self._kernel_id = await self._create_kernel()
-                break
-            except Exception:
-                await asyncio.sleep(retry_interval)
-        else:
-            raise ConnectionError("Failed to create kernel")
+        if self._kernel_id is None:
+            for _ in range(retries):
+                    try:
+                        self._kernel_id = await self._create_kernel()
+                        break
+                    except Exception:
+                        await asyncio.sleep(retry_interval)
+            else:
+                raise ConnectionError("Failed to create kernel")
 
         self._ws = await websocket_connect(HTTPRequest(url=self.kernel_ws_url))
         logger.info("Connected to kernel")
@@ -288,9 +290,9 @@ class ExecutionClient:
         """Closes the connection to the kernel and cleans up resources."""
         self.heartbeat_callback.stop()
         self._ws.close()
-        async with aiohttp.ClientSession() as session:
-            async with session.delete(self.kernel_http_url):
-                pass
+        # async with aiohttp.ClientSession() as session:
+        #     async with session.delete(self.kernel_http_url):
+        #         pass
 
     async def execute(self, code: str, timeout: float = 120) -> ExecutionResult:
         """Executes code and returns the result.
@@ -381,8 +383,10 @@ class ExecutionClient:
             + "\nimport matplotlib.pyplot as plt"
             + "\nfrom matplotlib_inline.backend_inline import set_matplotlib_formats"
             + "\n# matplotlib 설정"
-            + "\nmatplotlib.use('Agg')"  # 백엔드 설정
+            # + "\nmatplotlib.use('Agg')"  # 백엔드 설정
             + f"\nplt.rcParams['figure.figsize'] = {FIGURE_SIZE}"
             + f"\nplt.rcParams['savefig.format'] = '{SAVEFIG_FORMAT}'"
             + f"\nset_matplotlib_formats({', '.join(repr(fmt) for fmt in MATPLOTLIB_FORMATS)})"
+            + "\nmatplotlib.rc('font', family='NanumGothic')"
+            + "\nmatplotlib.rcParams['axes.unicode_minus'] = False"
         )
