@@ -169,7 +169,7 @@ class Execution:
                     image_bytes_io = io.BytesIO(b64decode(msg_data["image/png"]))
                     image = Image.open(image_bytes_io)
                     image.load()
-                    # yield image
+                    yield image
 
     def _raise_error(self, msg_dict):
         error_name = msg_dict["content"].get("ename", "Unknown Error")
