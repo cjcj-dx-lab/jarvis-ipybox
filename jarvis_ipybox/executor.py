@@ -162,14 +162,14 @@ class Execution:
                 if "image/svg+xml" in msg_data:
                     svg_data = msg_data["image/svg+xml"]
                     self._svg_images.append(svg_data)
-                    yield svg_data
+                    # yield svg_data
 
                 # PNG 형식 처리
                 if "image/png" in msg_data:
                     image_bytes_io = io.BytesIO(b64decode(msg_data["image/png"]))
                     image = Image.open(image_bytes_io)
                     image.load()
-                    yield image
+                    # yield image
 
     def _raise_error(self, msg_dict):
         error_name = msg_dict["content"].get("ename", "Unknown Error")
