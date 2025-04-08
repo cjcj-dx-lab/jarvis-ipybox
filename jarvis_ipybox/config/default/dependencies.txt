@@ -8,6 +8,7 @@ openpyxl = "^3.1"
 pyyaml = "^6.0"
 # 이미지 처리
 pillow = "^10.0"
+opencv-python = "^4.8"
 # 수학/과학
 scipy = "^1.11"
 # 데이터 분석 및 시각화 
