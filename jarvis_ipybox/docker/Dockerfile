@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     fonts-nanum \
+    libgl1 \
+    libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g ${GID} appuser && \
