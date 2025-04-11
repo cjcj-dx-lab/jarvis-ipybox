@@ -389,4 +389,11 @@ class ExecutionClient:
             + f"\nset_matplotlib_formats({', '.join(repr(fmt) for fmt in MATPLOTLIB_FORMATS)})"
             + "\nmatplotlib.rc('font', family='NanumGothic')"
             + "\nmatplotlib.rcParams['axes.unicode_minus'] = False"
+            + "\n# 폰트 크기 설정"
+            + "\nmatplotlib.rcParams['font.size'] = 16  # 기본 폰트 크기"
+            + "\nmatplotlib.rcParams['axes.titlesize'] = 24  # 그래프 제목 크기"
+            + "\nmatplotlib.rcParams['axes.labelsize'] = 16  # 축 레이블 크기"
+            + "\nmatplotlib.rcParams['xtick.labelsize'] = 16  # x축 눈금 레이블 크기"
+            + "\nmatplotlib.rcParams['ytick.labelsize'] = 16  # y축 눈금 레이블 크기"
+            + "\nmatplotlib.rcParams['legend.fontsize'] = 16  # 범례 폰트 크기"
         )
