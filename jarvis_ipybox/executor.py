@@ -387,7 +387,7 @@ class ExecutionClient:
             + f"\nplt.rcParams['figure.figsize'] = {FIGURE_SIZE}"
             + f"\nplt.rcParams['savefig.format'] = '{SAVEFIG_FORMAT}'"
             + f"\nset_matplotlib_formats({', '.join(repr(fmt) for fmt in MATPLOTLIB_FORMATS)})"
-            + "\nmatplotlib.rc('font', family=['NanumGothic', 'MalgunGothic'])"
+            + "\nmatplotlib.rc('font', family=['NanumGothic', 'Malgun Gothic'])"
             + "\nmatplotlib.rcParams['axes.unicode_minus'] = False"
             + "\n# 폰트 크기 설정"
             + "\nmatplotlib.rcParams['font.size'] = 16  # 기본 폰트 크기"
