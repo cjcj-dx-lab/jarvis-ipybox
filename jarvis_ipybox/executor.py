@@ -63,8 +63,7 @@ class ExecutionResult:
     """
 
     text: str | None
-    images: list[Image.Image]
-    svg_images: list[str]
+    images: list[str]
 
 
 class Execution:
@@ -80,8 +79,7 @@ class Execution:
         self.req_id = req_id
 
         self._chunks: list[str] = []
-        self._images: list[Image.Image] = []
-        self._svg_images: list[str] = []
+        self._images: list[str] = []
 
         self._stream_consumed: bool = False
 
@@ -106,7 +104,6 @@ class Execution:
         return ExecutionResult(
             text="".join(self._chunks).strip() if self._chunks else None,
             images=self._images,
-            svg_images=self._svg_images,
         )
 
     async def stream(self, timeout: float = 120) -> AsyncIterator[str]:
@@ -128,8 +125,6 @@ class Execution:
                         case str():
                             self._chunks.append(elem)
                             yield elem
-                        case Image.Image():
-                            self._images.append(elem)
         except asyncio.TimeoutError:
             await self.client._interrupt_kernel()
             await asyncio.sleep(0.2)  # TODO: make configurable
@@ -137,7 +132,7 @@ class Execution:
         finally:
             self._stream_consumed = True
 
-    async def _stream(self) -> AsyncIterator[str | Image.Image]:
+    async def _stream(self) -> AsyncIterator[str]:
         while True:
             msg_dict = await self.client._read_message()
             msg_type = msg_dict["msg_type"]
@@ -161,15 +156,7 @@ class Execution:
                 # SVG 형식 처리
                 if "image/svg+xml" in msg_data:
                     svg_data = msg_data["image/svg+xml"]
-                    self._svg_images.append(svg_data)
-                    # yield svg_data
-
-                # PNG 형식 처리
-                if "image/png" in msg_data:
-                    image_bytes_io = io.BytesIO(b64decode(msg_data["image/png"]))
-                    image = Image.open(image_bytes_io)
-                    image.load()
-                    yield image
+                    self._images.append(svg_data)
 
     def _raise_error(self, msg_dict):
         error_name = msg_dict["content"].get("ename", "Unknown Error")
