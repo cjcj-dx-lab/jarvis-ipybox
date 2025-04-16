@@ -16,13 +16,6 @@ from tornado.websocket import WebSocketClientConnection, websocket_connect
 
 logger = logging.getLogger(__name__)
 
-# WebSocket 메시지 크기 제한 설정 (기본값: 10MB)
-MAX_MESSAGE_SIZE = 10 * 1024 * 1024
-
-# JSON 인코딩/디코딩 설정
-JSON_ENCODE_ARGS = {'ensure_ascii': False, 'separators': (',', ':')}
-JSON_DECODE_ARGS = {'strict': False}
-
 # matplotlib 설정 상수
 # 그래프의 기본 크기 (가로, 세로) - 인치 단위
 # 10x6 인치는 웹 환경에서 보기 좋은 와이드스크린 비율입니다
@@ -271,9 +264,7 @@ class ExecutionClient:
 
         # WebSocket 연결 설정
         ws_request = HTTPRequest(
-            url=self.kernel_ws_url,
-            max_message_size=MAX_MESSAGE_SIZE,
-            max_buffer_size=MAX_MESSAGE_SIZE
+            url=self.kernel_ws_url
         )
         self._ws = await websocket_connect(ws_request)
         logger.info("Connected to kernel")
@@ -350,10 +341,10 @@ class ExecutionClient:
         return result.text
 
     async def _send_request(self, req):
-        await self._ws.write_message(json_encode(req, **JSON_ENCODE_ARGS))
+        await self._ws.write_message(json_encode(req))
 
     async def _read_message(self) -> dict:
-        return json_decode(await self._ws.read_message(), **JSON_DECODE_ARGS)
+        return json_decode(await self._ws.read_message())
 
     async def _create_kernel(self):
         async with aiohttp.ClientSession() as session:
