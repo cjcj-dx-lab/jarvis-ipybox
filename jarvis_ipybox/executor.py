@@ -16,6 +16,13 @@ from tornado.websocket import WebSocketClientConnection, websocket_connect
 
 logger = logging.getLogger(__name__)
 
+# WebSocket 메시지 크기 제한 설정 (기본값: 10MB)
+MAX_MESSAGE_SIZE = 10 * 1024 * 1024
+
+# JSON 인코딩/디코딩 설정
+JSON_ENCODE_ARGS = {'ensure_ascii': False, 'separators': (',', ':')}
+JSON_DECODE_ARGS = {'strict': False}
+
 # matplotlib 설정 상수
 # 그래프의 기본 크기 (가로, 세로) - 인치 단위
 # 10x6 인치는 웹 환경에서 보기 좋은 와이드스크린 비율입니다
@@ -30,7 +37,7 @@ SAVEFIG_FORMAT = "svg"
 # 여러 형식을 지정하면 모두 생성되어 클라이언트에서 선택 가능
 # 'svg': 벡터 그래픽으로 확대/축소 및 동적 조작에 적합
 # 'png': 래스터 이미지로 모든 환경에서 일관된 표시 가능
-MATPLOTLIB_FORMATS = ["svg", "png"]
+MATPLOTLIB_FORMATS = ["svg"]
 
 
 class ConnectionError(Exception):
@@ -262,7 +269,13 @@ class ExecutionClient:
             else:
                 raise ConnectionError("Failed to create kernel")
 
-        self._ws = await websocket_connect(HTTPRequest(url=self.kernel_ws_url))
+        # WebSocket 연결 설정
+        ws_request = HTTPRequest(
+            url=self.kernel_ws_url,
+            max_message_size=MAX_MESSAGE_SIZE,
+            max_buffer_size=MAX_MESSAGE_SIZE
+        )
+        self._ws = await websocket_connect(ws_request)
         logger.info("Connected to kernel")
 
         self.heartbeat_callback = PeriodicCallback(
@@ -337,10 +350,10 @@ class ExecutionClient:
         return result.text
 
     async def _send_request(self, req):
-        await self._ws.write_message(json_encode(req))
+        await self._ws.write_message(json_encode(req, **JSON_ENCODE_ARGS))
 
     async def _read_message(self) -> dict:
-        return json_decode(await self._ws.read_message())
+        return json_decode(await self._ws.read_message(), **JSON_DECODE_ARGS)
 
     async def _create_kernel(self):
         async with aiohttp.ClientSession() as session:
