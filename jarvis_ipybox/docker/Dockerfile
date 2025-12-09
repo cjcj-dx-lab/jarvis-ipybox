@@ -39,6 +39,8 @@ ENV PATH="${HOME}/poetry/bin:${PATH}"
 ENV PATH="${HOME}/.local/bin:${PATH}"
 
 COPY --chown=appuser:appuser environment.yml ${HOME}/
+RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 RUN conda env create -f ${HOME}/environment.yml -n jarvis-ipybox && conda init bash
 
 COPY --chown=appuser:appuser pyproject.toml ${HOME}/
