@@ -6,6 +6,8 @@ s3fs = "^2023.10"
 # 파일 처리/변환
 openpyxl = "^3.1"
 pyyaml = "^6.0"
+fastavro = "^1.9"
+pyarrow = "^15.0"
 # 이미지 처리
 pillow = "^10.0"
 opencv-python = "^4.8"
